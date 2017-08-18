@@ -3,39 +3,59 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
-
 (function($) {
-
-	skel.breakpoints({
+    skel.breakpoints({
 		xlarge:		'(max-width: 1680px)',
 		large:		'(max-width: 1280px)',
 		medium:		'(max-width: 980px)',
 		small:		'(max-width: 736px)',
 		xsmall:		'(max-width: 480px)',
 		xxsmall:	'(max-width: 360px)'
-	});
-
+    });
+    
     $(function() {
-	// [TBHR specific
-	    var imageSizes = [4000, 2048, 2048, 3264, 4000, 3264, 3264, 3264, 3264, 3264, 1000, 3264, 2560, 1200, 2746, 2611, 2048, 2048, 2048];
-	    var jpg = function(i) { i = i % imageSizes.length; return 'pic' + (i < 10 ? '0' : '') + i + '.jpg'; }
-	    var orig = function(i) { return 'images/' + jpg(i) + ' ' + imageSizes[i % imageSizes.length] + 'w'; }
-	    var medium = function(i) { return 'images/medium/' + jpg(i) + ' 1280w'; }
-	    var small = function(i) { return 'images/small/' + jpg(i) + ' 480w'; }
-	    var p = Math.floor(Math.random() * imageSizes.length);
-	    var changeImages = function() {
-		$('#bg').empty().append('<style>#bg::after{' +
-					'background-image:url(images/' + jpg(p) + ');' +
-					'background-image:-webkit-image-set(url(' + orig(p) + '), url(' + medium(p) + '), url(' + small(p) + '));' +
-					'background-image:image-set(url(' + orig(p) + '), url(' + medium(p) + '), url(' + small(p) + '));' +
-					'}</style>');
-		p++;
-		$('img').attr('srcset', function(i) { return [orig(p + i), medium(p + i), small(p + i)].join(', '); });
-	    };
-	    $('.logo').click(changeImages);
-	changeImages();
-	// ]
-			
+		// [TBHR specific
+		function nextRaceDay() {
+			var n = 4; //th
+			var day = 6; //Saturday in
+			var month = 8; //September
+			var now = new Date(Date.now());
+			var year = now.getFullYear();
+			var d = new Date(year, month, 1 + (day + 7 - new Date(year, month, 1).getDay()) % 7);
+			if (now > d)
+				d = new Date(year + 1, month, 1 + (day + 7 - new Date(year + 1, month, 1).getDay()) % 7);
+			return new Date(d.getFullYear(), month, d.getDate() + (n - 1) * 7).toLocaleDateString('en-GB', {day: 'numeric', weekday: 'long', month: 'long', year: 'numeric'});
+		}
+
+		$("#next-event").text(nextRaceDay());
+
+/*
+<picture>
+  <source media="(min-width: 800px)" srcset="images/medium/pic00.jpg, images/large/pic00.jpg 2x" />
+  <source media="(min-width: 450px)" srcset="images/small/pic00.jpg, images/medium/pic00.jpg 2x" />
+  <img src="images/small/pic00.jpg" srcset="images/medium/pic00.jpg 2x" alt="" />
+</picture>
+*/
+		
+		var imageSizes = [4000, 2048, 2048, 3264, 4000, 3264, 3264, 3264, 3264, 3264, 1000, 3264, 2560, 1200, 2746, 2611, 2048, 2048, 2048, 1756, 1758];
+		var jpg = function(i) { i = i % imageSizes.length; return 'pic' + (i < 10 ? '0' : '') + i + '.jpg'; }
+		var orig = function(i) { return 'images/' + jpg(i) + ' ' + imageSizes[i % imageSizes.length] + 'w'; }
+		var medium = function(i) { return 'images/medium/' + jpg(i) + ' 1280w'; }
+		var small = function(i) { return 'images/small/' + jpg(i) + ' 480w'; }
+		var p = Math.floor(Math.random() * imageSizes.length);
+		var changeImages = function() {
+			$('#bg').empty().append('<style>#bg::after{' +
+									'background-image:url(images/' + jpg(p) + ');' +
+									'background-image:-webkit-image-set(url(' + orig(p) + '), url(' + medium(p) + '), url(' + small(p) + '));' +
+									'background-image:image-set(url(' + orig(p) + '), url(' + medium(p) + '), url(' + small(p) + '));' +
+									'}</style>');
+			p++;
+			$('img.random').attr('srcset', function(i) { return [orig(p + i), medium(p + i), small(p + i)].join(', '); });
+		};
+		$('#logo').click(changeImages);
+		changeImages();
+		// ]
+		
 		var	$window = $(window),
 			$body = $('body'),
 			$wrapper = $('#wrapper'),

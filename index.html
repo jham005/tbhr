@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	Dimension by HTML5 UP
+	Based on Dimension by HTML5 UP
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
@@ -9,24 +9,25 @@
     <title>The Two Breweries Hill Race</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="assets/css/main.css" />
+    <meta name="theme-color" content="#217323">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="assets/css/main.css" async />
+    <script src="https://use.fontawesome.com/4cb54a324a.js"></script>
     <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
   </head>
   <body>
     <div id="wrapper">
       <header id="header">
-	<div class="logo">
-	  <span class="icon fa-diamond"></span>
-	</div>
 	<div class="content">
 	  <div class="inner">
-	    <h1>The Two Breweries Hill Race</h1>
+	    <h1 id="logo">The Two Breweries Hill Race</h1>
 	    <p>
 	      A race from Traquair House in Innerleithen to Broughton
 	      in the scenic Scottish Borders.<br/> Race category AL,
 	      30km / 18 miles, 1500m / 4900ft ascent.
 	    </p>
+	    <h2 id="next-event">4th Saturday in September</h2>
 	  </div>
 	</div>
 	<nav>
@@ -44,7 +45,7 @@
       <div id="main">
 	<article id="about">
 	  <h2 class="major">About</h2>
-	  <span class="image main"><img src="images/pic01.jpg" alt="" /></span>
+	  <span class="image main"><img class="random" /></span>
 	  <p>
 	    The Two Breweries was established in 1983, making it one
 	    of the oldest hill races in Scotland. The race is held on
@@ -74,7 +75,7 @@
 
 	<article id="route">
 	  <h2 class="major">The route</h2>
-	  <span class="image main"><img src="images/pic02.jpg" alt="" /></span>
+	  <span class="image main"><img class="random" /></span>
 	  <p>
 	    The race is around 30km / 18 miles, and includes some 1500m /
 	    4900ft of ascent. The terrain predominantly follows hill
@@ -83,8 +84,8 @@
 	  </p>
 	  <p>
 	    This race is an arduous event which should not be
-	    undertaken by runners who are unfit, or are inexperienced
-	    in the hills. Full emergency kit comprising wind and
+	    undertaken by runners who are unfit or are inexperienced
+	    in the hills. <b>Full emergency kit</b> comprising wind and
 	    waterproof full body cover, a map of the entire race
 	    route, orienteering-type compass, whistle and food
 	    equivalent to a chocolate bar must be carried by all
@@ -109,17 +110,20 @@
 	    </table>
 	  </p>
 	  <p>
-	    This fly-over of the route will give you an idea of what to expect.
+	    This fly-over of the route will give you an idea of what to expect.<br />
 	    <iframe width="560" height="315" src="https://www.youtube.com/embed/X9NhxV5sei8" frameborder="0" allowfullscreen></iframe>
 	  </p>
 	</article>
 
 	<article id="entries">
 	  <h2 class="major">Entries</h2>
-	  <span class="image main"><img src="images/pic03.jpg" alt="" /></span>
+	  <span class="image main"><img class="random" /></span>
 	  <p>Pre-enter on-line
 	  at <a href="https://www.entrycentral.com/TwoBreweriesHillRace">Entry
-	  Central</a>.</p>
+	      Central</a>.</p>
+	  <div class='entryCentral-simple-widget' data-product-id='100585'></div>
+	  <script src='https://www.entrycentral.com/js/embed_button.js' type='text/javascript' async></script>
+	  <br />
 	  <p>
 	    A bus leaves Broughton for Traquhair at 10am, with race
 	    registration at Traquhair. There is a strict kit-check
@@ -134,7 +138,7 @@
 
 	<article id="local">
 	  <h2 class="major">Local</h2>
-	  <span class="image main"><img src="images/pic04.jpg" alt="" /></span>
+	  <span class="image main"><img class="random" /></span>
 	  <p>
 	    We are delighted to be supported
 	    by <a href="http://www.traquair.co.uk">Traquair House</a>
@@ -154,10 +158,10 @@
 	  <p>
 	    Locals taking part will appreciate the beauty and
 	    interests of the Scottish Borders. Those coming from
-	    further afield may be interested in what the Borders
-	    offers. Why not treat the family to a weekend away! Local
-	    accommodation and information about the area can be found
-	    at the following tourism sites:
+	    further afield may be interested in what the Borders has
+	    to offer. Why not treat the family to a weekend away!
+	    Local accommodation and information about the area can be
+	    found at the following tourism sites:
 	  </p>
 	    <ul>
 	      <li><a href="https://www.visitscotland.com/destinations-maps/scottish-borders/">Visit Scotland</a></li>
@@ -167,12 +171,37 @@
 
 	<article id="links">
 	  <h2 class="major">Links</h2>
-	  <span class="image main"><img src="images/pic05.jpg" alt="" /></span>
+	  <span class="image main"><img class="random" /></span>
 	  <ul>
-	    <li>Scottish Hill Runners &mdash; <a href="http://www.scottishhillrunners.uk">www.scottishhillrunners.uk</a></li>
-	    <li>The Fell Runners Association &mdash; <a href="http://www.fellrunner.org.uk">www.fellrunner.org.uk</a></li>
-	    <li>Scottish Athletics &mdash; <a href="http://www.scottishathletics.org.uk">www.scottishathletics.org.uk</a></li>
-	    <li>Westerlands Cross Country Club &mdash; <a href="http://www.westerlandsccc.co.uk">www.westerlandsccc.co.uk</a></li>
+	    <li>Facebook
+	      &mdash; <a href="https://www.facebook.com/twobreweries.org.uk/">www.facebook.com/twobreweries.org.uk</a>,
+	      a public forum for discussions about the race.
+	    </li>
+	    <li>Scottish Hill Runners
+	    &mdash; <a href="http://www.scottishhillrunners.uk">www.scottishhillrunners.uk</a>
+	    is an independent organisation supporting hill running in
+	    Scotland. SHR organises the Scottish Championship race
+	    series, and provides race insurance for the TBHR. The
+	    images on this web site are courtesy of SHR.</li>
+	    <li>Scottish Hill Racing
+	    &mdash; <a href="http://www.scottishhillracing.co.uk">www.scottishhillracing.co.uk</a>
+	      contains a comprehensive calendar and results for hill races all across Scotland.</li>
+	    <li>Moffat Mountain Rescue
+	    &mdash; <a href="http://moffatmrt.scottishmountainrescue.org/donate/">moffatmrt.scottishmountainrescue.org</a>
+	    provide hill cover for the TBHR. If the weather closes in,
+	    you will be glad to know they are out there.
+	    <li>The Fell Runners Association
+	    &mdash; <a href="http://www.fellrunner.org.uk">www.fellrunner.org.uk</a>,
+	      a UK-wide fell running organisation.</li>
+	    <li>Scottish Athletics
+	    &mdash; <a href="http://www.scottishathletics.org.uk">www.scottishathletics.org.uk</a>,
+	    the national governing body for athletics in Scotland.</li>
+	    <li>Westerlands Cross Country Club
+	    &mdash; <a href="http://www.westerlandsccc.co.uk">www.westerlandsccc.co.uk</a>,
+	    arguably one of the best small-to-medium sized hill
+	    running clubs in the West End of Glasgow. The TBHR is one
+	    of seven or so hill running events organised each year by
+	    the Westies.</li>
 	  </ul>
 	</article>
 
@@ -196,6 +225,7 @@
 	      <textarea name="message" id="message" rows="6"></textarea>
 	    </div>
 	    <ul class="actions">
+	      <li><div class="g-recaptcha" data-sitekey="6Lc8MC0UAAAAAPv0r5-4BeJriM-vNLAQdyECItkb"></div></li>
 	      <li><input type="submit" value="Send Message" class="special" /></li>
 	      <li><input type="reset" value="Reset" /></li>
 	    </ul>
@@ -208,6 +238,7 @@
 	</article>
 	
 	<article id="sent">
+	  <span class="image main"><img class="random" /></span>
 	  <h2 class="major">Thank you!</h2>
 	  <p>
 	    Your message has been sent.
@@ -215,12 +246,15 @@
 	</article>
 	
 	<article id="fail">
+	  <span class="image main"><img class="random" /></span>
 	  <h2 class="major">Something went wrong</h2>
 	  <p>
 	    Your message was not able to be delivered. Did you miss
 	    including your name or email, perhaps? If so, then please
 	    <a href="#contact">try again</a>. If the problem persists,
-	    then maybe ask someone from
+	    then either
+	    try <a href="https://www.facebook.com/twobreweries.org.uk/">the
+	    Facebook forum</a> or ask someone from
 	    the <a href="http://www.westerlandsccc.co.uk">Westerlands
 	    CCC</a> to forward your message to the Two Breweries Hill
 	    Race organiser.
@@ -236,9 +270,23 @@
     </div>
     
     <div id="bg"></div>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/skel.min.js"></script>
-    <script src="assets/js/util.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="assets/js/util.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script>
+if ('serviceWorker' in navigator) {
+	window.addEventListener('load', function() {
+		navigator.serviceWorker.register('sw.js').then(
+			function(registration) {
+				console.log('ServiceWorker registration successful with scope: ', registration.scope);
+			},
+			function(err) {
+				console.log('ServiceWorker registration failed: ', err);
+			});
+	});
+}
+    </script>
   </body>
 </html>

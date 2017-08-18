@@ -1,0 +1,15 @@
+{
+  "short_name": "TBHR",
+  "name": "The Two Breweries Hill Race",
+  "icons": [
+    {
+      "src":"icon/web_hi_res_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "index.html?utm_source=homescreen",
+  "background_color": "#000",
+  "Theme_color": "#217323",
+  "display": "fullscreen"
+}
