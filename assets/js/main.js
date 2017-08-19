@@ -50,11 +50,11 @@
 		.empty()
 		.append('<style>#bg::after{' +
 			'background-image:url(images/' + jpg(p) + ');' +
-			'background-image:-webkit-image-set(url(' + orig(p) + '), url(' + medium(p) + '), url(' + small(p) + '));' +
-			'background-image:image-set(url(' + orig(p) + '), url(' + medium(p) + '), url(' + small(p) + '));' +
+			'background-image:-webkit-image-set(url(' + medium(p) + '), url(' + small(p) + '));' +
+			'background-image:image-set(url(' + medium(p) + '), url(' + small(p) + '));' +
 			'}</style>');
 	    p += r;
-	    $('img.random').attr('srcset', function(i) { return [orig(p + i * r), medium(p + i * r), small(p + i * r)].join(', '); });
+	    $('img.random').attr('srcset', function(i) { return [medium(p + i * r), small(p + i * r)].join(', '); });
 	};
 	$('#logo').click(changeImages).css('cursor', 'pointer');
 	changeImages();

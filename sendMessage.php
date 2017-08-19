@@ -22,7 +22,7 @@ $message =
 
 file_put_contents('./messages.txt', $message, FILE_APPEND | LOCK_EX);
 
-$success = mail('jham005@gmail.com', 'TBHR Enquiry', $message);
+$success = mail('jham005@gmail.com', 'TBHR Enquiry', $message, "From: <$_POST[email]>\nX-Mailer: PHP\nReturn-Path: <PHP>\n");
 if (!$success) {
   $error = error_get_last()['message'];
   file_put_contents('./messages.txt', $error, FILE_APPEND | LOCK_EX);
