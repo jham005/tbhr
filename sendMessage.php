@@ -11,7 +11,7 @@ $response =
     stream_context_create(
       array('http' => array('header' => "Content-type: application/x-www-form-urlencoded\r\n",
 			    'method'  => 'POST',
-			    'content' => http_build_query(array('secret'=> '6Lcsay0UAAAAABNy3lK5hpXcXgc0OxsXP_GsagDa',
+			    'content' => http_build_query(array('secret'=> '6Le8jCwUAAAAAN2rv_qC4z3NbDIaoT9CNxyZAMbe',
 								'response' => $_REQUEST['g-recaptcha-response'],
 								'remoteip' => $_SERVER['REMOTE_ADDR']))))));
 
