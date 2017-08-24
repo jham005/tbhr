@@ -24,19 +24,30 @@
 	    var d = new Date(year, month, 1 + (day + 7 - new Date(year, month, 1).getDay()) % 7);
 	    if (now > d)
 		d = new Date(year + 1, month, 1 + (day + 7 - new Date(year + 1, month, 1).getDay()) % 7);
-	    return new Date(d.getFullYear(), month, d.getDate() + (n - 1) * 7).toLocaleDateString('en-GB', {day: 'numeric', weekday: 'long', month: 'long', year: 'numeric'});
+	    return new Date(d.getFullYear(), month, d.getDate() + (n - 1) * 7);
+	}
+
+	function ordinalSuffix(n) {
+	    switch (n % 100) {
+	    case 11: case 12: case 13: return "th";
+	    default:
+		switch (n % 10) {
+		case 1: return "st";
+		case 2: return "nd";
+		case 3: return "rd";
+		default: return "th";
+		}
+	    }
+	}
+
+	function eventAge() {
+	    var year = nextRaceDay().getFullYear() - 1983;
+	    return year + "<sup>" + ordinalSuffix(year) + "</sup>";
 	}
 	
-	$("#next-event").text(nextRaceDay());
-	
-	/*
-	  <picture>
-	  <source media="(min-width: 800px)" srcset="images/medium/pic00.jpg, images/large/pic00.jpg 2x" />
-	  <source media="(min-width: 450px)" srcset="images/small/pic00.jpg, images/medium/pic00.jpg 2x" />
-	  <img src="images/small/pic00.jpg" srcset="images/medium/pic00.jpg 2x" alt="" />
-	  </picture>
-	*/
-	
+	$("#next-event").text(nextRaceDay().toLocaleDateString('en-GB', {day: 'numeric', weekday: 'long', month: 'long', year: 'numeric'}));
+	$("#installment").html(eventAge());
+		
 	var imageSizes = [4000, 2048, 2048, 3264, 4000, 3264, 3264, 3264, 3264, 3264, 1000, 3264, 2560, 1200, 2746, 2611, 2048, 2048, 2048, 1756, 1758];
 	var relativePrimes = [1, 2, 4, 5, 8, 10, 11, 13, 16, 17, 19, 20];
 	var jpg = function(i) { i = i % imageSizes.length; return 'pic' + (i < 10 ? '0' : '') + i + '.jpg'; }
@@ -44,6 +55,7 @@
 	var medium = function(i) { return 'images/medium/' + jpg(i) + ' 1280w'; }
 	var small = function(i) { return 'images/small/' + jpg(i) + ' 480w'; }
 	var p = Math.floor(Math.random() * imageSizes.length);
+	var tmr = 0;
 	var changeImages = function() {
 	    var r = relativePrimes[Math.floor(Math.random() * relativePrimes.length)];
 	    $('#bg')
@@ -55,6 +67,8 @@
 			'}</style>');
 	    p += r;
 	    $('img.random').attr('src', function(i) { return 'images/small/' + jpg(p + i * r); });
+	    clearTimeout(tmr);
+	    tmr = setTimeout(changeImages, 20000 + Math.floor(Math.random() * 40000));
 	};
 	$('#logo').click(changeImages).css('cursor', 'pointer');
 	changeImages();
