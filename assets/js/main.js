@@ -22,7 +22,7 @@
 	    var now = new Date(Date.now());
 	    var year = now.getFullYear();
 	    var d = new Date(year, month, 1 + (day + 7 - new Date(year, month, 1).getDay()) % 7);
-	    if (now > d)
+	    if (now > new Date(d.getFullYear(), month, d.getDate() + (n - 1) * 7))
 		d = new Date(year + 1, month, 1 + (day + 7 - new Date(year + 1, month, 1).getDay()) % 7);
 	    return new Date(d.getFullYear(), month, d.getDate() + (n - 1) * 7);
 	}
@@ -48,13 +48,11 @@
 	$("#next-event").text(nextRaceDay().toLocaleDateString('en-GB', {day: 'numeric', weekday: 'long', month: 'long', year: 'numeric'}));
 	$("#installment").html(eventAge());
 		
-	var imageSizes = [4000, 2048, 2048, 3264, 4000, 3264, 3264, 3264, 3264, 3264, 1000, 3264, 2560, 1200, 2746, 2611, 2048, 2048, 2048, 1756, 1758];
-	var relativePrimes = [1, 2, 4, 5, 8, 10, 11, 13, 16, 17, 19, 20];
-	var jpg = function(i) { i = i % imageSizes.length; return 'pic' + (i < 10 ? '0' : '') + i + '.jpg'; }
-	var orig = function(i) { return 'images/' + jpg(i) + ' ' + imageSizes[i % imageSizes.length] + 'w'; }
+	var nImages = 21;
+	var jpg = function(i) { i = i % nImages; return 'pic' + (i < 10 ? '0' : '') + i + '.jpg'; }
 	var medium = function(i) { return 'images/medium/' + jpg(i) + ' 1280w'; }
 	var small = function(i) { return 'images/small/' + jpg(i) + ' 480w'; }
-	var p = Math.floor(Math.random() * imageSizes.length);
+	var p = Math.floor(Math.random() * nImages);
 	var tmr = 0;
 	var changeImages = function() {
 	    var r = relativePrimes[Math.floor(Math.random() * relativePrimes.length)];
