@@ -49,6 +49,7 @@
 	$("#installment").html(eventAge());
 		
 	var nImages = 21;
+	var relativePrimes = [1, 2, 4, 5, 8, 10, 11, 13, 16, 17, 19, 20];
 	var jpg = function(i) { i = i % nImages; return 'pic' + (i < 10 ? '0' : '') + i + '.jpg'; }
 	var medium = function(i) { return 'images/medium/' + jpg(i) + ' 1280w'; }
 	var small = function(i) { return 'images/small/' + jpg(i) + ' 480w'; }
