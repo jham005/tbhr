@@ -22,8 +22,8 @@ $message =
 
 file_put_contents('./messages.txt', $message, FILE_APPEND | LOCK_EX);
 
-$from = 'organiser@twobreweries.org.uk';
-$success = mail('jham005@gmail.com', 'TBHR Enquiry', $message, "From: Two Breweries Hill Race <$from>\nX-Mailer: PHP\nReturn-Path: <PHP>\n");
+$from = 'twobreweries@gmail.com';
+$success = mail('twobreweries@gmail.com', 'TBHR Enquiry', $message, "From: Two Breweries Hill Race <$from>\nX-Mailer: PHP\nReturn-Path: <PHP>\n");
 if (!$success) {
   $error = error_get_last()['message'];
   file_put_contents('./messages.txt', $error, FILE_APPEND | LOCK_EX);
