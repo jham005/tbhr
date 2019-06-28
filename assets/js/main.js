@@ -41,8 +41,8 @@
 	}
 
 	function eventAge() {
-	    var year = nextRaceDay().getFullYear() - 1983;
-	    return year + "<sup>" + ordinalSuffix(year) + "</sup>";
+	    var age = nextRaceDay().getFullYear() - 1983; // The event was not held in 2001
+	    return age + "<sup>" + ordinalSuffix(age) + "</sup>";
 	}
 	
 	$("#next-event").text(nextRaceDay().toLocaleDateString('en-GB', {day: 'numeric', weekday: 'long', month: 'long', year: 'numeric'}));

@@ -11,9 +11,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <meta name="theme-color" content="#217323">
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="assets/css/main.css" async />
-    <script src="https://use.fontawesome.com/4cb54a324a.js"></script>
-    <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="http://www.entrycentral.com/css/web-widget.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/zf/jq-3.3.1/dt-1.10.18/datatables.min.css"/>
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
   </head>
   <body>
@@ -35,6 +35,7 @@
 	    <li><a href="#about">About</a></li>
 	    <li><a href="#route">Route</a></li>
 	    <li><a href="#entries">Entries</a><li>
+	    <li><a href="#results">Results</a><li>
 	    <li><a href="#local">Local</a></li>
 	    <li><a href="#links">Links</a></li>
 	    <li><a href="#contact">Contact</a></li>
@@ -122,7 +123,6 @@
 	  at <a href="https://www.entrycentral.com/TwoBreweriesHillRace">Entry
 	      Central</a>.</p>
 	  <div class='entryCentral-simple-widget' data-product-id='100585'></div>
-	  <script src='https://www.entrycentral.com/js/embed_button.js' type='text/javascript' async></script>
 	  <br />
 	  <p>
 	    A bus leaves Broughton for Traquhair at 10am, with race
@@ -136,6 +136,19 @@
 	  </p>
 	</article>
 
+	<article id="results">
+	  <h2 class="major">Results</h2>
+	  <span class="image main"><img class="random" /></span>
+	  <div class="field">
+	    <label for="year">Year</label>
+	    <select name="year" id="year">
+	      <option>-</option>
+	    </select>
+	  </div>
+	  <table id="r" class="display">
+	  </table>
+	</article>
+	
 	<article id="local">
 	  <h2 class="major">Local</h2>
 	  <span class="image main"><img class="random" /></span>
@@ -263,18 +276,53 @@
 	
       </div>
       <footer id="footer">
-	<p class="copyright"><i class="fa fa-creative-commons" aria-hidden="true"></i> 2017 John Hamer. Based on a design from <a href="https://html5up.net">HTML5 UP</a>.
+	<p class="copyright"><i class="fa fa-creative-commons" aria-hidden="true"></i> 2019 John Hamer. Based on a design from <a href="https://html5up.net">HTML5 UP</a>.
 	  This work is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License.</a>
 	</p>
       </footer>
     </div>
     
     <div id="bg"></div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://use.fontawesome.com/4cb54a324a.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>   
+    <script type="text/javascript" src="https://cdn.datatables.net/v/zf/jq-3.3.1/dt-1.10.18/datatables.min.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script src="assets/js/util.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script>
+      function loadYear(year) {
+        $.getJSON('results.php', { y: year }, function(data) {
+          var table = $('#r').DataTable({
+             paging: false, scrollY: 600, searching: false,
+             data: data.results,
+             columns: jQuery.map(data.columns, function(c, i) { return {data: i, title: c}; })
+          });
+          $('#r thead').empty();
+          table.on('order.dt', function (e, settings) { $('#r thead').empty(); });
+          table.on('search.dt', function (e, settings) { $('#r thead').empty(); });
+        });
+      }
+
+      $(document).ready(function() {
+          $.getJSON('years.php', function(data) {
+          var mostRecent = data.years[data.years.length - 1];
+          $('#year option').replaceWith(
+            jQuery.map(data.years, function(year) { return $("<option>").text(year).prop('selected', year == mostRecent); }));
+          $('#year').change(function() { $('#r').DataTable().destroy(); loadYear($('#year option:selected').text()); });
+	  loadYear(mostRecent);
+        });
+
+        $('.entryCentral-simple-widget').each(function() {
+          var showAvailable = $(this).data('show-available') || 0;
+          var prodId = $(this).data('product-id') || 0;
+          var myElem = $(this);
+          var jsonp_url = "//www.entrycentral.com/widget/simple/" + prodId + "/" + showAvailable + "/callback=?";
+          $.getJSON(jsonp_url, function(data) { myElem.html(data.html); });
+        });
+      });
+    </script>
     <script>
 if ('serviceWorker' in navigator) {
 	window.addEventListener('load', function() {
