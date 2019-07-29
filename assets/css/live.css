@@ -1,0 +1,29 @@
+tr.selected {
+    background-color: #a9f0ff !important;
+    font-weight: bold;
+}
+
+tr.deleted {
+    background-color: #a9a9a9 !important;
+    text-decoration: line-through;
+}
+
+tr.edited {
+    background-color: #9dd667;
+}
+
+#loading {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(0,0,0,.5);
+}
+
+#loading i {
+    position: absolute;    
+    left: 50%;
+    top: 50%;
+}

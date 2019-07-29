@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="assets/css/live.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>   
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="assets/js/live.js"></script>
+  </head>
+  <body>
+    <div class="form-group">
+      <div class="btn-group">
+	<button type="button" class="btn btn-primary" id="update">Sync</button><br/>
+	<input type="text" class="form-control" id="name" placeholder="Enter your name" />
+	<select class="form-control" id="checkpoints">
+	  <option value="" selected="true" disabled="true">Select your checkpoint</option>
+	</select>
+      </div>
+      <div class="alert alert-primary" id="info" role="alert"></div>
+      <div class="btn-group-vertical ml-4 mt-4" role="group" id="keypad">
+	<div class="btn-group">
+	  <input class="text-center form-control-lg mb-2" disabled="true" type="text" id="bib" />
+	</div>
+	<div class="btn-group">
+	  <button type="button" class="btn btn-outline-secondary py-3">1</button>
+	  <button type="button" class="btn btn-outline-secondary py-3">2</button>
+	  <button type="button" class="btn btn-outline-secondary py-3">3</button>
+	</div>
+	<div class="btn-group">
+	  <button type="button" class="btn btn-outline-secondary py-3">4</button>
+	  <button type="button" class="btn btn-outline-secondary py-3">5</button>
+	  <button type="button" class="btn btn-outline-secondary py-3">6</button>
+	</div>
+	<div class="btn-group">
+	  <button type="button" class="btn btn-outline-secondary py-3">7</button>
+	  <button type="button" class="btn btn-outline-secondary py-3">8</button>
+	  <button type="button" class="btn btn-outline-secondary py-3">9</button>
+	</div>
+	<div class="btn-group">
+	  <button type="button" class="btn btn-outline-secondary py-3">0</button>
+	  <button type="button" class="btn btn-outline-secondary py-3">&lt;</button>
+	  <button type="button" class="btn btn-primary py-3" id='ok' onclick="">Ok</button>
+	</div>
+      </div>
+      <table id="log" class="display" style="width:100%">
+	<thead>
+          <tr>
+            <th>Bib</th>
+            <th>Name</th>
+            <th>Time</th>
+            <th>Edit</th>
+          </tr>
+	</thead>
+      </table>
+    </div>
+    <div id="loading"><i>Please wait...</i></div>
+  </body>
+</html>

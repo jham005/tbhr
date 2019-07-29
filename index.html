@@ -148,7 +148,7 @@
 	  <table id="r" class="display">
 	  </table>
 	</article>
-	
+
 	<article id="local">
 	  <h2 class="major">Local</h2>
 	  <span class="image main"><img class="random" /></span>
@@ -306,7 +306,7 @@
       }
 
       $(document).ready(function() {
-          $.getJSON('years.php', function(data) {
+          $.getJSON('results/years.php', function(data) {
           var mostRecent = data.years[data.years.length - 1];
           $('#year option').replaceWith(
             jQuery.map(data.years, function(year) { return $("<option>").text(year).prop('selected', year == mostRecent); }));
