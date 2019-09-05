@@ -1,3 +1,7 @@
+// TODO: save local changes to local storage periodically (every change?), and restore on page reload
+// TODO: CP1 is special; need mass start time
+// TODO: Handle early start
+
 $(document).ready(function() {
   let currentPosition = null;
   $('#info').hide();
@@ -20,9 +24,25 @@ $(document).ready(function() {
   let closestCheckpointDistance = null;
   let runnerNames = { };
   let token = '';
-  $.post('results/login.php', 'text')
+  $.post('results/login.php', 'json')
     .done(function(data) {
-      token = data;
+      token = data.token;
+      $.each(data.checkpoints, function() {
+	checkpoints.append(
+	  $('<option>', {
+	    text: this[1] + ' (' + this[0] + ')',
+	    value: this[0]
+	  }));
+	if (currentPosition) {
+	  const dist = distance(currentPosition, this[2], this[3]);
+	  if (!closestCheckpointDistance || dist < closestCheckpointDistance) {
+	    closestCheckpointDistance = dist;
+	    checkpoints.val(this[0]);
+	    $('#info').show().text('You are ' + dist + ' from this checkpoint');
+	  }
+	}
+      });
+
       const pad2 = function(n) { return n < 10 ? ('0' + n) : ('' + n); };
 
       const t = $('#log').DataTable( {
@@ -33,7 +53,7 @@ $(document).ready(function() {
             data: 'bib',
             render: function (bib, type, row, meta) {
 	      if (type == 'display' && t.row(meta.row).node() == selectedRow)
-		return '<input type="number" name="bib" value="' + (bib || '') + '" />';
+		return '<input type="number" min="1" max="999" name="bib" value="' + (bib || '') + '" />';
               return bib || '';
             },
             targets: 0
@@ -51,6 +71,8 @@ $(document).ready(function() {
 	      if (type == 'filter')
 		return '';
               if (type == 'display') {
+		if (row.retired != '-')
+		  return row.retired;
 		const hms = pad2(time.getHours()) + ":" + pad2(time.getMinutes()) + ':' + pad2(time.getSeconds());
 		if (t.row(meta.row).node() == selectedRow)
 		  return '<input type="time" name="time" step="1" value="' + hms + '" />';
@@ -66,7 +88,7 @@ $(document).ready(function() {
             render: function(time, type, row, meta) {
               if (type == 'display') {
 		if (t.row(meta.row).node() == selectedRow)
-                  return '<span><button class="btn btn-outline-secondary py-3 edit-save">&check;</button><button class="btn btn-outline-secondary py-3 edit-cancel">&cross;</btn><button class="btn btn-outline-secondary py-3 edit-delete">&#x1F5D1;</button></span>';
+                  return '<span><button class="btn btn-outline-secondary py-3 edit-save">&check;</button><button class="btn btn-outline-secondary py-3 edit-cancel">&cross;</btn><button class="btn btn-outline-secondary py-3 edit-delete">&#x1F5D1;</button><button class="btn btn-outline-secondary py-3 edit-retire">RETIRE</button></span>';
                 return '<span class="edit-row">&#x2710;</span>';
 	      }
 	      
@@ -93,13 +115,24 @@ $(document).ready(function() {
 	selectRow(this.parentElement.parentElement);
       });
       
-      $('#log tbody').on('click', '.edit-save', function () {
+      $('#log tbody').on('click', '.edit-row', function () {
+	selectRow(this.parentElement.parentElement);
+      });
+      
+      $('#log tbody').on('click', '.edit-retire', function () {
+	if (!selectedRow) return;
+	const orig = $(selectedRow).data('orig');
+	orig.retired = 'RETIRED ' + checkpoints.val();
+	orig.editedAt = new Date();
+	t.row(selectedRow).data(orig);
 	selectRow(null);
       });
       
       $('#log tbody').on('click', '.edit-cancel', function () {
 	if (!selectedRow) return;
-	t.row(selectedRow).data($(selectedRow).data('orig'));
+	const orig = $(selectedRow).data('orig');
+	orig.retired = '-';
+	t.row(selectedRow).data(orig);
 	selectRow(null);
       });
       
@@ -122,9 +155,6 @@ $(document).ready(function() {
 	  t.draw();
       };
 
-      // TODO: Button to display remaining runners?
-      // TODO: save local changes to local storage periodically (every change?), and restore on page reload
-
       const toTimestamp = function(date) { return parseInt((date.getTime() / 1000).toFixed(0)); }
       
       const lastEdited = { };
@@ -140,7 +170,7 @@ $(document).ready(function() {
 	      const editedAt = toTimestamp(data.editedAt || data.time);
 	      if (data.id)
 		updates.push(['DELETE', data.id, editedAt]);
-              updates.push(['TIME', data.bib, toTimestamp(data.time), editedAt]);
+	      updates.push(['TIME', data.bib, toTimestamp(data.time), editedAt, data.retired]);
 	    }
           });
         return updates;
@@ -153,6 +183,7 @@ $(document).ready(function() {
           'results/update.php',
           {
             token: token,
+	    lastId: lastId,
 	    checkpoint: checkpoints.val(),
 	    who: $('#name').val(),
             updates: JSON.stringify(pendingUpdates())
@@ -173,67 +204,50 @@ $(document).ready(function() {
                 });
               $.each(result.updates, function(i, update) {
                 switch (update[0]) {
-		case 'CHECKPOINT':
-		  if (checkpoints.find("[value='" + update[1] + "']").length == 0)
-		    checkpoints.append(
-		      $('<option>', {
-			text: update[2] + ' (' + update[1] + ')',
-			value: update[1]
-		      }));
-		  if (currentPosition) {
-		    const dist = distance(currentPosition, update[3], update[4]);
-		    if (!closestCheckpointDistance || dist < closestCheckpointDistance) {
-		      closestCheckpointDistance = dist;
-		      checkpoints.val(update[1]);
-		      $('#info').show().text('You are ' + dist + ' from this checkpoint');
-		    }
-		  }
-		  
-		  break;
                 case 'REGISTER':
-                  runnerNames[update[1]] = update[2];
+                  runnerNames[update[1]] = update[3] + ' ' + update[2];
                   break;
                 case 'DELETE':
                   delete rows[update[1]];
                   break;
                 case 'TIME':
-                  rows[update[4]] =
-                    {
-                      bib: update[1],
-                      time: new Date(update[2] * 1000),
-                      editedAt: new Date(update[3] * 1000),
-		      id: update[4]
-                    };
+		  rows[update[5]] = {
+                    bib: update[1],
+                    time: new Date(update[2] * 1000),
+                    editedAt: new Date(update[3] * 1000),
+		    retired: update[4],
+		    id: update[5]
+                  };
                   break;
                 }
               });
 
-	      $('#info')
-		.show()
-		.text(
-		  'There are ' + Object.keys(runnerNames).length + ' runners, ' +
-		    Object.keys(rows).length + ' passed this checkpoint');
-	      
+	      const bibCount = { };
               const data = [];
               $.each(rows, function(i, row) {
                 data.push(row);
+		bibCount[row.bib]++;
               });
-	      selectRow(null);
               t.clear();
               t.rows.add(data).draw();
+
+	      const duplicates = [];
+	      $.each(bibCount, function(i, n) { if (n > 1) duplicates.push(i); });
+	      const dupText = duplicates.join(',');
+	      const text = 'There are ' + Object.keys(runnerNames).length + ' runners, ' +
+		    Object.keys(bibCount).length + ' passed this checkpoint.' +
+		    (dupText != '' ? ('Duplicate bib numbers: ' + dupText) : '');
+	      $('#info').show().text(text);
             });
       };
 
+      $('#update').click(updateServer);
+      updateServer();
       checkpoints.change(function() {
 	lastId = 0;
-	runnerNames = { };
-	closestCheckpointDistance = null;
 	t.clear();
 	updateServer();
       });
-      
-      $('#update').click(updateServer);
-      updateServer();
 
       $('#log tbody').on('change', 'input', function () {
 	const tr = this.parentElement.parentElement;
@@ -262,7 +276,7 @@ $(document).ready(function() {
 	selectRow(null);
         const v = $(this).text();
         if (v == 'Ok') {
-          const row = t.row.add({ bib: +bib.data('bib'), time: new Date(), edited: true }).draw();
+          const row = t.row.add({ bib: +bib.data('bib'), time: new Date(), edited: true, retired: '-' }).draw();
 	  $(row.node()).addClass('edited');
           bib.data('bib', '');
         } else if (v == '<')

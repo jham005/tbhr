@@ -9,16 +9,16 @@ header('Connection: keep-alive');
 
 // TIME:
 // event: TIME
-// data: { bib: <bib>, checkpoint: <checkpoint>, time: <time>, id: <id> }
+// data: { bib: <bib>, checkpoint: <checkpoint>, time: <time>, id: <id> [,retired: <checkpoint>] }
 
 // event: DELETE
 // data: <id>
 
-$lastId = intval($_SERVER['HTTP_X_LAST_EVENT_ID']);
+$lastId = isset($_SERVER['HTTP_X_LAST_EVENT_ID']) ? intval($_SERVER['HTTP_X_LAST_EVENT_ID']) : 0;
 
 $checkpoint = '';
 for (; !connection_aborted(); sleep(30)) {
-  $fd = fopen('live.csv', 'rb');
+  $fd = fopen('live-2019.csv', 'rb');
   if (!$fd) continue;
   fseek($fd, $lastId);
   $registrations = [];
@@ -29,17 +29,20 @@ for (; !connection_aborted(); sleep(30)) {
   for (; $row = fgetcsv($fd); $lastId = ftell($fd)) {
     switch ($row[0]) {
     case 'REGISTER':
-      $registrations[] = ['bib' => intval($row[1]), 'name' => $row[2], 'category' => $row[3] ?? '', 'club' => $row[4] ?? ''];
+      $registrations[] = ['bib' => intval($row[1]), 'name' => "$row[3] $row[2]", 'category' => $row[4] ?? '', 'club' => $row[5] ?? ''];
       break;
     case 'UPDATE':
       $checkpoint = $row[2];
       break;
     case 'TIME':
-      $times[$lastId] = [
+      $time = [
 	'bib' => intval($row[1]),
 	'checkpoint' => $checkpoint,
 	'time' => intval($row[2]),
 	'id' => $lastId];
+      if (isset($row[4]) && $row[4] == 'RETIRED')
+	$time['retired'] = $checkpoint;
+      $times[$lastId] = $time;
       break;
     case 'DELETE':
       $id = intval($row[1]);
