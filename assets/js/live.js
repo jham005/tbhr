@@ -229,7 +229,8 @@ $(document).ready(function() {
 		bibCount[row.bib]++;
               });
               t.clear();
-              t.rows.add(data).draw();
+              t.rows.add(data);
+	      t.columns.adjust().draw();
 
 	      const duplicates = [];
 	      $.each(bibCount, function(i, n) { if (n > 1) duplicates.push(i); });

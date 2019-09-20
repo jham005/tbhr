@@ -17,7 +17,7 @@ header('Connection: keep-alive');
 $lastId = isset($_SERVER['HTTP_X_LAST_EVENT_ID']) ? intval($_SERVER['HTTP_X_LAST_EVENT_ID']) : 0;
 
 $checkpoint = '';
-for (; !connection_aborted(); sleep(30)) {
+for (; !connection_aborted(); sleep(10)) {
   $fd = fopen('live-2019.csv', 'rb');
   if (!$fd) continue;
   fseek($fd, $lastId);
@@ -40,7 +40,7 @@ for (; !connection_aborted(); sleep(30)) {
 	'checkpoint' => $checkpoint,
 	'time' => intval($row[2]),
 	'id' => $lastId];
-      if (isset($row[4]) && $row[4] == 'RETIRED')
+      if (isset($row[4]) && $row[4] != '-')
 	$time['retired'] = $checkpoint;
       $times[$lastId] = $time;
       break;
