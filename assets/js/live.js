@@ -242,7 +242,20 @@ $(document).ready(function() {
             });
       };
 
-      $('#update').click(updateServer);
+      $('#update').click(function() {
+	if (!checkpoints.val()) {
+	  alert('Please first enter your checkpoint');
+	  checkpoints.focus();
+	  return;
+	}
+	
+	if ($('#name').val() == '') {
+	  alert('Please first enter your name');
+	  $('#name').focus();
+	}
+	
+	updateServer();
+      });
       updateServer();
       checkpoints.change(function() {
 	lastId = 0;
