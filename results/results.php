@@ -18,8 +18,8 @@ while ($row = fgetcsv($fd))
   case 'REGISTER':
     $bib = intval($row[1]);
     $name = "$row[3] $row[2]";
-    $category = $row[4];
-    $club = $row[5];
+    $club = $row[4];
+    $category = $row[5];
     $startGroup = $row[6];
     $registrations[$bib] = [$name, $category, $club, $startGroup];
     break;
@@ -35,5 +35,5 @@ while ($row = fgetcsv($fd))
 foreach ($results as $bib => $result) {
   list ($name, $category, $club, $startGroup) = $registrations[$bib];
   list ($checkpoint, $time) = $result;
-  fputcsv($out, [$bib, ($time / 86400) + 25569, $name, $category, $checkpoint, $startGroup]);
+  fputcsv($out, [$bib, ($time / 86400) + 25569, $name, $category, $club, $checkpoint, $startGroup]);
 }
