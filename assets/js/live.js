@@ -1,11 +1,9 @@
 // TODO: save local changes to local storage periodically (every change?), and restore on page reload
-// TODO: CP1 is special; need mass start time
-// TODO: Handle early start
 
 $(document).ready(function() {
   let currentPosition = null;
   $('#info').hide();
-  if (navigator.geolocation)
+  if (false && navigator.geolocation)
     navigator
     .geolocation
     .getCurrentPosition(
@@ -99,7 +97,8 @@ $(document).ready(function() {
         ]
       });
       
-      $('#log tbody').on('click', '.edit-delete', function () {
+      $('#log tbody').on('click', '.edit-delete', function (event) {
+	event.preventDefault();
 	if (selectedRow) {
 	  const row = $(selectedRow);
 	  if (row.hasClass('deleted'))
@@ -111,15 +110,18 @@ $(document).ready(function() {
 	selectRow(null);
       });
       
-      $('#log tbody').on('click', '.edit-row', function () {
+      $('#log tbody').on('click', '.edit-row', function (event) {
+	event.preventDefault();
 	selectRow(this.parentElement.parentElement);
       });
       
-      $('#log tbody').on('click', '.edit-row', function () {
-	selectRow(this.parentElement.parentElement);
+      $('#log tbody').on('click', '.edit-save', function (event) {
+	event.preventDefault();
+	selectRow(null);
       });
-      
-      $('#log tbody').on('click', '.edit-retire', function () {
+           
+      $('#log tbody').on('click', '.edit-retire', function (event) {
+	event.preventDefault();
 	if (!selectedRow) return;
 	const orig = $(selectedRow).data('orig');
 	orig.retired = 'RETIRED ' + checkpoints.val();
@@ -128,7 +130,8 @@ $(document).ready(function() {
 	selectRow(null);
       });
       
-      $('#log tbody').on('click', '.edit-cancel', function () {
+      $('#log tbody').on('click', '.edit-cancel', function (event) {
+	event.preventDefault();
 	if (!selectedRow) return;
 	const orig = $(selectedRow).data('orig');
 	orig.retired = '-';
