@@ -32,8 +32,16 @@ while ($row = fgetcsv($fd))
     break;
   }
 
+uasort($results, positionOrder);
+$position = 1;
 foreach ($results as $bib => $result) {
   list ($name, $category, $club, $startGroup) = $registrations[$bib];
   list ($checkpoint, $time) = $result;
-  fputcsv($out, [$bib, ($time / 86400) + 25569, $name, $category, $club, $checkpoint, $startGroup]);
+  fputcsv($out, [$bib, date('c', $time), $position++, $name, $category, $club, $checkpoint, $startGroup]);
+}
+
+function positionOrder($a, $b) {
+  if ($a[0] == $b[0])
+    return $a[1] - $b[1];
+  return $a[0] > $b[0] ? 1 : -1;
 }

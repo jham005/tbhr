@@ -21,6 +21,9 @@ $(document).ready(function() {
   const checkpoints = $('#checkpoints');
   let closestCheckpointDistance = null;
   let runnerNames = { };
+  let runnerClub = { };
+  let runnerCateg = { };
+  let runnerStart = { };
   let token = '';
   $.post('results/login.php', 'json')
     .done(function(data) {
@@ -58,7 +61,7 @@ $(document).ready(function() {
           },
           {
             data: 'bib',
-            render: function (bib, type) {
+            render: function (bib) {
               return bib == 0 ? '' : (runnerNames[bib] || '(Not registered)');
             },
             targets: 1
@@ -81,6 +84,31 @@ $(document).ready(function() {
             },
             targets: 2
           },
+	  {
+	    data: 'position',
+	    targets: 3
+	  },
+	  {
+	    data: 'bib',
+            render: function (bib) {
+              return bib == 0 ? '' : (runnerCateg[bib] || '?');
+            },
+            targets: 4
+	  },
+	  {
+	    data: 'bib',
+            render: function (bib) {
+              return bib == 0 ? '' : (runnerClub[bib] || 'Unattached');
+            },
+            targets: 5
+	  },
+	  {
+	    data: 'bib',
+            render: function (bib) {
+              return bib == 0 ? '' : (runnerStart[bib] || '');
+            },
+            targets: 6
+	  },
           {
             data: 'time',
             render: function(time, type, row, meta) {
@@ -92,7 +120,7 @@ $(document).ready(function() {
 	      
               return time;
             },
-            targets: 3
+            targets: 7
           }
         ]
       });
@@ -208,7 +236,11 @@ $(document).ready(function() {
               $.each(result.updates, function(i, update) {
                 switch (update[0]) {
                 case 'REGISTER':
-                  runnerNames[update[1]] = update[3] + ' ' + update[2];
+		  const bib = update[1];
+                  runnerNames[bib] = update[3] + ' ' + update[2];
+		  runnerClub[bib] = update[4];
+		  runnerCateg[bib] = update[5];
+		  runnerStart[bib] = update[6] || '';
                   break;
                 case 'DELETE':
                   delete rows[update[1]];
@@ -231,6 +263,8 @@ $(document).ready(function() {
                 data.push(row);
 		bibCount[row.bib]++;
               });
+	      data.sort(function(a, b) { return a.time - b.time; });
+	      $.each(data, function(i, d) { d.position = i + 1; });
               t.clear();
               t.rows.add(data);
 	      t.columns.adjust().draw();
