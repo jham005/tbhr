@@ -17,10 +17,7 @@
 
 		tbody {
 			tr {
-				border: solid _size(border-width) _palette(border);
-				border-left: 0;
-				border-right: 0;
-
+			    border: none;
 				&:nth-child(2n + 1) {
 					background-color: _palette(border-bg);
 				}
@@ -28,7 +25,7 @@
 		}
 
 		td {
-			padding: 0.75em 0.75em;
+			padding: 0.15em 0.15em;
 		}
 
 		th {

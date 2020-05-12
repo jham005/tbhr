@@ -110,6 +110,10 @@
 		font-size: 0.6rem;
 	}
 
+	table {
+		font-size: 0.8rem;
+	}
+
 	@include breakpoint(small) {
 		h1 {
 			font-size: 1.75rem;

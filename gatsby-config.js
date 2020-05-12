@@ -1,24 +1,42 @@
+const { typeNameFromDir } = require("gatsby-transformer-csv");
+
 module.exports = {
   siteMetadata: {
-    title: "Gatsby Starter - Dimension V2",
-    author: "Hunter Chang",
-    description: "A Gatsby.js V2 Starter based on Dimension by HTML5 UP"
+    title: "Two Breweries Hill Race",
+    author: "John Hamer",
+    description: "An classic long hill race in the Scottish Borders"
   },
   plugins: [
     'gatsby-plugin-react-helmet',
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: 'gatsby-starter-default',
-        short_name: 'starter',
+        name: 'Two Breweries Hill Race',
+        short_name: 'TBHR',
         start_url: '/',
         background_color: '#663399',
         theme_color: '#663399',
         display: 'minimal-ui',
-        icon: 'src/images/gatsby-icon.png', // This path is relative to the root of the site.
+        icon: 'src/images/favicon.png',
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `results`,
+        path: `${__dirname}/src/`,
+      },
+    },
+    {
+      resolve: `gatsby-transformer-csv`,
+      options: {
+	typeName: typeNameFromDir
+      }
+    },
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
     'gatsby-plugin-sass',
-    'gatsby-plugin-offline'
+    `gatsby-plugin-styled-components`,
+    'gatsby-plugin-offline',
   ],
 }
