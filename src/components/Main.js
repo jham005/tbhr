@@ -111,14 +111,13 @@ class Main extends React.Component {
   <Article id="entries">
     <Image src="pic03.jpg" alt="" />
     <p>
-      Entries usually opened around Easter. However, we have delayed opening entries this year due to the current uncertainty around Covid-19.
-    </p>
-    <p>
       The race is on-line pre-entry, via <a href="https://www.entrycentral.com/TwoBreweriesHillRace">Entry
       Central</a>. If you are unable to enter on-line, please contact
       the race director.
     </p>
-    <div className='entryCentral-simple-widget' data-product-id='100585'></div>
+    <p>
+      Entries are usually opened around Easter.
+    </p>
     <p>
       A bus leaves Broughton for Traquhair at 10am, with race
       registration at Traquhair. There is a strict kit-check
@@ -162,7 +161,7 @@ class Main extends React.Component {
     </p>
     <ul>
       <li><a href="https://www.visitscotland.com/destinations-maps/scottish-borders/">Visit Scotland</a></li>
-      <li><a href="http://www.touristnetuk.com/scotland/borders/">TouristNet</a></li>
+      <li><a href="https://www.touristnetuk.com/by-location/scotland/Scottish-borders">TouristNet</a></li>
     </ul>
   </Article>
 	

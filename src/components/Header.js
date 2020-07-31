@@ -17,6 +17,7 @@ function nextRaceDay() {
   let month = 8; //September
   let now = new Date(Date.now());
   let year = now.getFullYear();
+  if (year == 2020) year++; // The event not held in 2020
   let d = new Date(year, month, 1 + (day + 7 - new Date(year, month, 1).getDay()) % 7);
   if (now > new Date(d.getFullYear(), month, d.getDate() + (n - 1) * 7))
     d = new Date(year + 1, month, 1 + (day + 7 - new Date(year + 1, month, 1).getDay()) % 7);
@@ -36,7 +37,7 @@ function ordinalSuffix(n) {
   }
 }
 
-const eventAge = nextRaceDay().getFullYear() - 1983; // The event was not held in 2001
+const eventAge = nextRaceDay().getFullYear() - 1984; // Not held 2001 or 2020
 const raceDay = nextRaceDay().toLocaleDateString('en-GB', {day: 'numeric', weekday: 'long', month: 'long', year: 'numeric'});
 
 const Header = (props) => (
